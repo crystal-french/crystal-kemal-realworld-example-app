@@ -16,5 +16,10 @@ For more information on how to this works with other frontends/backends, head ov
 
 # Getting started
 
-> npm install, npm start, etc.
+## Installation
 
+* Install [Crystal](https://crystal-lang.org/docs/installation/) and Git,
+* git clone https://github.com/humboldtux/crystal-kemal-realworld-example-app.git
+* cd crystal-kemal-realworld-example-app
+* shards install
+* crystal run src/realworld.cr
