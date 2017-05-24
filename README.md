@@ -23,3 +23,7 @@ For more information on how to this works with other frontends/backends, head ov
 * cd crystal-kemal-realworld-example-app
 * shards install
 * crystal run src/realworld.cr
+
+# To Do / In Progress
+
+See the [project board](https://github.com/humboldtux/crystal-kemal-realworld-example-app/projects/1)
