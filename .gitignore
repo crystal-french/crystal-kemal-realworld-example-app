@@ -1,8 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/bower_components
+/doc/
+/lib/
+/bin/
+/.shards/
 
 # IDEs and editors
 /.idea
@@ -10,7 +11,6 @@
 .classpath
 *.launch
 .settings/
-
 
 #System Files
 .DS_Store
