@@ -7,4 +7,4 @@ module Realworld
   end
 end
 
-Kemal.run
+Kemal.run if config.env != "test"
