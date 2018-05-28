@@ -4,15 +4,18 @@ version: 0.0.1
 authors:
   - Benoit Benedetti <humboldtux@gmail.com>
 
+development_dependencies:
+  dotenv:
+    github: gdotdesign/cr-dotenv
+
 dependencies:
   kemal:
     github: sdogruyol/kemal
-    branch: master
 
 targets:
   realworld:
     main: src/realworld.cr
 
-crystal: 0.22.0
+crystal: 0.24.2
 
 license: MIT

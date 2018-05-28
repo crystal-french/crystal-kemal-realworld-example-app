@@ -1,12 +1,16 @@
 version: 1.0
 shards:
+  dotenv:
+    github: gdotdesign/cr-dotenv
+    version: 0.1.0
+
   kemal:
     github: sdogruyol/kemal
-    commit: 0724e07c22513790fbeefeca3bf8e1a8407d44b2
+    version: 0.22.0
 
   kilt:
     github: jeromegn/kilt
-    version: 0.3.3
+    version: 0.4.0
 
   radix:
     github: luislavena/radix

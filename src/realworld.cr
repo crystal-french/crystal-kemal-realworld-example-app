@@ -1,3 +1,4 @@
+require "./env"
 require "./realworld/*"
 require "kemal"
 
