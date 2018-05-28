@@ -3,16 +3,28 @@ version: 0.0.1
 
 authors:
   - Benoit Benedetti <humboldtux@gmail.com>
+  - reiswindy
 
 development_dependencies:
   dotenv:
     github: gdotdesign/cr-dotenv
+    version: ~> 0.1.0
 
 dependencies:
   kemal:
     github: sdogruyol/kemal
+    version: ~> 0.22.0
+  jwt:
+    github: crystal-community/jwt
+    version: ~> 0.2.3
+  mysql:
+    github: crystal-lang/crystal-mysql
+    version: ~> 0.4.0
+  crecto:
+    github: fridgerator/crecto
+    version: ~> 0.8.6
 
-targets:
+targets:  
   realworld:
     main: src/realworld.cr
 
