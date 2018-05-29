@@ -9,7 +9,7 @@ module Realworld::Actions::Profile
       if user
         p_owner = Realworld::Services::Repo.get_by(Realworld::Models::User, username: env.params.url["username"])
         if p_owner
-          if user.followed_users.select {|fu| fu.followed_user_id == p_owner.id}.size = 0
+          if user.followed_users.select {|fu| fu.followed_user_id == p_owner.id}.size == 0
             following = Realworld::Models::Following.new
             following.follower_user_id = user.id
             following.followed_user_id = p_owner.id
