@@ -12,7 +12,7 @@ module Realworld::Services
       begin
         payload, token_header = JWT.decode(match.not_nil!["token"], Secret, Algorithm)
         id = payload.as(Hash(String, JSON::Type))["id"].as(Int64)
-        user = Repo.get!(Realworld::Models::User, id)
+        user = Repo.get!(Realworld::Models::User, id, Repo::Query.preload(:followed_users))
       rescue exception
         nil
       end

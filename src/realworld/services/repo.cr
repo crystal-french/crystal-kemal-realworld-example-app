@@ -4,6 +4,9 @@ require "mysql"
 module Realworld::Services
   class Repo
     extend Crecto::Repo
+
+    Query = Crecto::Repo::Query
+
     config do |conf|
       conf.adapter = Crecto::Adapters::Mysql
       conf.database = ENV["MYSQL_DATABASE"]
