@@ -87,7 +87,7 @@ module Realworld
   
   post "/api/articles/:slug/comments" do |env|
     user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
-    Realworld::Actions::Comment::Create.new.call(env, create)
+    Realworld::Actions::Comment::Create.new.call(env, user)
   end
 
   delete "/api/articles/:slug/comments/:id" do |env|
