@@ -1,4 +1,4 @@
-module ModuleName::Actions
+module Realworld::Actions
   class Base
   end
 end

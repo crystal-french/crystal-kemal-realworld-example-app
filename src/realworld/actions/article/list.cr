@@ -1,6 +1,6 @@
 require "../base"
 
-module Realworld::Actions::Articles
+module Realworld::Actions::Article
   class List < Realworld::Actions::Base
     def call(env)
       # TODO: Logic

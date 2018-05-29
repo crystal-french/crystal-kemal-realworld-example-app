@@ -1,6 +1,6 @@
 require "../base"
 
-module Realworld::Actions::Profiles
+module Realworld::Actions::Profile
   class Unfollow < Realworld::Actions::Base
     def call(env)
       # TODO: Logic
