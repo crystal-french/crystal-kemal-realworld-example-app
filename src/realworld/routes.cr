@@ -17,29 +17,29 @@ module Realworld
   end
 
   get "/api/user" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::User::CurrentUser.new.call(env, user)
   end
 
   put "/api/user" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::User::UpdateCurrent.new.call(env, user)
   end
 
 
 
   get "/api/profiles/:username" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Profile::Get.new.call(env, user)
   end
 
   post "/api/profiles/:username/follow" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Profile::Follow.new.call(env, user)
   end
 
   delete "/api/profiles/:username/follow" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Profile::Unfollow.new.call(env, user)
   end
 
@@ -50,7 +50,7 @@ module Realworld
   end
 
   get "/api/articles/feed" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Article::Feed.new.call(env, user)
   end
 
@@ -59,27 +59,27 @@ module Realworld
   end
 
   post "/api/articles" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Article::Create.new.call(env, user)
   end
 
   put "/api/articles" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Article::Update.new.call(env, user)
   end
 
   delete "/api/articles/:slug" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Article::Delete.new.call(env, user)
   end
 
   post "/api/articles/:slug/favorite" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Article::Favorite.new.call(env, user)
   end
 
   delete "/api/articles/:slug/favorite" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Article::Unfavorite.new.call(env, user)
   end
 
@@ -90,12 +90,12 @@ module Realworld
   end
   
   post "/api/articles/:slug/comments" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Comment::Create.new.call(env, user)
   end
 
   delete "/api/articles/:slug/comments/:id" do |env|
-    user = Realworld::Services::Auth.auth(env.headers["Authorization"]?)
+    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
     Realworld::Actions::Comment::Delete.new.call(env, user)
   end
 
