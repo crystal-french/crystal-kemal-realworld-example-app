@@ -1,4 +1,6 @@
 require "../base"
+require "../../models/user"
+require "../../services/repo"
 require "crypto/bcrypt/password"
 
 module Realworld::Actions::User
