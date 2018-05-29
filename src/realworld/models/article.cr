@@ -1,3 +1,12 @@
+require "crecto"
+require "mysql"
+
+require "./tag"
+require "./user"
+require "./comment"
+require "./favorite"
+require "./tag_usage"
+
 module Realworld::Models
   class Article < Crecto::Model
     schema :articles do

@@ -1,3 +1,7 @@
+require "kemal"
+require "./services/*"
+require "./actions/**"
+
 module Realworld
   before_all do |env|
     env.response.content_type = "application/json"

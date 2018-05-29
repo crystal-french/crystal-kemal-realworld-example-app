@@ -1,3 +1,9 @@
+require "crecto"
+require "mysql"
+
+require "./user"
+require "./article"
+
 module Realworld::Models
   class Favorite < Crecto::Model
     set_created_at_field nil

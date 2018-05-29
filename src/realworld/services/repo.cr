@@ -1,3 +1,6 @@
+require "crecto"
+require "mysql"
+
 module Realworld::Services
   class Repo
     extend Crecto::Repo

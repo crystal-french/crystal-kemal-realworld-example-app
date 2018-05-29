@@ -1,3 +1,9 @@
+require "crecto"
+require "mysql"
+
+require "./article"
+require "./tag_usage"
+
 module Realworld::Models
   class Tag < Crecto::Model
     set_created_at_field nil

@@ -1,3 +1,8 @@
+require "crecto"
+require "mysql"
+
+require "./user"
+
 module Realworld::Models
   class Following < Crecto::Model
     set_created_at_field nil
