@@ -5,6 +5,9 @@ require "crypto/bcrypt/password"
 
 module Realworld::Actions::User
   class Login < Realworld::Actions::Base
+    include Realworld::Services
+    include Realworld::Models
+
     def call(env)
       parsed = parse_json_body(env.request.body)
       if values = parsed["user"]?
@@ -12,7 +15,7 @@ module Realworld::Actions::User
         email = values["email"]? ? values["email"].as_s : ""
         password = values["password"]? ? values["password"].as_s : ""
 
-        user = Realworld::Services::Repo.get_by(Realworld::Models::User, email: email)
+        user = Repo.get_by(User, email: email)
         if user && Crypto::Bcrypt::Password.new(user.hash.not_nil!) == password
           # TODO: Return success
         else

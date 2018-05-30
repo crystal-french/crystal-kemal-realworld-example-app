@@ -5,18 +5,21 @@ require "../../services/repo"
 
 module Realworld::Actions::Comment
   class Create < Realworld::Actions::Base
+    include Realworld::Services
+    include Realworld::Models
+
     def call(env, user)
       if user
-        article = Realworld::Services::Repo.get_by(Realworld::Models::Article, slug: env.params.url["slug"])
+        article = Repo.get_by(Article, slug: env.params.url["slug"])
         if article
           parsed = parse_json_body(env.request.body)
           if values = parsed["comment"]?
-            comment = Realworld::Models::Comment.new
+            comment = Comment.new
             comment.body = values["body"].as_s if values["body"]
             comment.user = user
             comment.article = article
 
-            changeset = Realworld::Services::Repo.insert(comment)
+            changeset = Repo.insert(comment)
             if changeset.valid?
               # TODO: return success
             else

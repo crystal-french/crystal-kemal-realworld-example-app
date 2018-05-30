@@ -5,11 +5,14 @@ require "../../services/repo"
 
 module Realworld::Actions::Comment
   class List < Realworld::Actions::Base
+    include Realworld::Services
+    include Realworld::Models
+    
     def call(env)
-      article = Realworld::Services::Repo.get_by(Realworld::Models::Article, slug: env.params.url["slug"])
+      article = Repo.get_by(Article, slug: env.params.url["slug"])
       if article
-        query = Realworld::Services::Repo::Query.where(article_id: article.id)
-        comments = Realworld::Services::Repo.all(Realworld::Models::Comment, query)
+        query = Repo::Query.where(article_id: article.id)
+        comments = Repo.all(Comment, query)
 
         # TODO: return success
       else

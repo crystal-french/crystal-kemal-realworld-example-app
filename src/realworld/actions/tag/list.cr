@@ -4,8 +4,11 @@ require "../../services/repo"
 
 module Realworld::Actions::Tag
   class List < Realworld::Actions::Base
+    include Realworld::Services
+    include Realworld::Models
+
     def call(env)
-      tags = Realworld::Services::Repo.all(Realworld::Models::Tag)
+      tags = Repo.all(Tag)
       # TODO: Return success
     end
   end  

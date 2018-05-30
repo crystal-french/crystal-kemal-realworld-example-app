@@ -4,6 +4,8 @@ require "crypto/bcrypt/password"
 
 module Realworld::Actions::User
   class UpdateCurrent < Realworld::Actions::Base
+    include Realworld::Services
+    
     def call(env, user)
       if user
         parsed = parse_json_body(env.request.body)
@@ -14,7 +16,7 @@ module Realworld::Actions::User
           user.image = values["image"].as_s if values["image"]?
           user.bio = values["bio"].as_s if values["bio"]?
 
-          changeset = Realworld::Services::Repo.update(user)
+          changeset = Repo.update(user)
           if changeset.valid?
             # TODO: Return success
           else
