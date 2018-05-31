@@ -9,7 +9,7 @@ module Realworld::Actions::Tag
 
     def call(env)
       tags = Repo.all(Tag)
-      # TODO: Return success
+      {"tags" => tags.map(&.name)}.to_json
     end
   end  
 end
