@@ -1,12 +1,8 @@
 require "kemal"
-require "./services/*"
+require "./models/user"
 require "./actions/**"
 
 module Realworld
-  before_all do |env|
-    env.response.content_type = "application/json"
-  end
-
 
   post "/api/users" do |env|
     Realworld::Actions::User::Register.new.call(env)
@@ -17,30 +13,25 @@ module Realworld
   end
 
   get "/api/user" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::User::CurrentUser.new.call(env, user)
+    Realworld::Actions::User::CurrentUser.new.call(env, env.get("auth").as(Models::User?))
   end
 
   put "/api/user" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::User::UpdateCurrent.new.call(env, user)
+    Realworld::Actions::User::UpdateCurrent.new.call(env, env.get("auth").as(Models::User?))
   end
 
 
 
   get "/api/profiles/:username" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Profile::Get.new.call(env, user)
+    Realworld::Actions::Profile::Get.new.call(env, env.get("auth").as(Models::User?))
   end
 
   post "/api/profiles/:username/follow" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Profile::Follow.new.call(env, user)
+    Realworld::Actions::Profile::Follow.new.call(env, env.get("auth").as(Models::User?))
   end
 
   delete "/api/profiles/:username/follow" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Profile::Unfollow.new.call(env, user)
+    Realworld::Actions::Profile::Unfollow.new.call(env, env.get("auth").as(Models::User?))
   end
 
 
@@ -50,8 +41,7 @@ module Realworld
   end
 
   get "/api/articles/feed" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Article::Feed.new.call(env, user)
+    Realworld::Actions::Article::Feed.new.call(env, env.get("auth").as(Models::User?))
   end
 
   get "/api/articles/:slug" do |env|
@@ -59,28 +49,23 @@ module Realworld
   end
 
   post "/api/articles" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Article::Create.new.call(env, user)
+    Realworld::Actions::Article::Create.new.call(env, env.get("auth").as(Models::User?))
   end
 
   put "/api/articles" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Article::Update.new.call(env, user)
+    Realworld::Actions::Article::Update.new.call(env, env.get("auth").as(Models::User?))
   end
 
   delete "/api/articles/:slug" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Article::Delete.new.call(env, user)
+    Realworld::Actions::Article::Delete.new.call(env, env.get("auth").as(Models::User?))
   end
 
   post "/api/articles/:slug/favorite" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Article::Favorite.new.call(env, user)
+    Realworld::Actions::Article::Favorite.new.call(env, env.get("auth").as(Models::User?))
   end
 
   delete "/api/articles/:slug/favorite" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Article::Unfavorite.new.call(env, user)
+    Realworld::Actions::Article::Unfavorite.new.call(env, env.get("auth").as(Models::User?))
   end
 
 
@@ -90,13 +75,11 @@ module Realworld
   end
   
   post "/api/articles/:slug/comments" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Comment::Create.new.call(env, user)
+    Realworld::Actions::Comment::Create.new.call(env, env.get("auth").as(Models::User?))
   end
 
   delete "/api/articles/:slug/comments/:id" do |env|
-    user = Realworld::Services::Auth.auth(env.request.headers["Authorization"]?)
-    Realworld::Actions::Comment::Delete.new.call(env, user)
+    Realworld::Actions::Comment::Delete.new.call(env, env.get("auth").as(Models::User?))
   end
 
 
