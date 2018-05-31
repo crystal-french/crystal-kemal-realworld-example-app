@@ -2,6 +2,7 @@ require "./env"
 require "./realworld/models/*"
 require "./realworld/services/*"
 require "./realworld/handlers/*"
+require "./realworld/version"
 require "./realworld/routes"
 
 require "kemal"

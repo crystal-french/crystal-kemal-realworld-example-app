@@ -7,10 +7,13 @@ module Realworld::Services
     Algorithm = ENV["JWT_ALGORITHM"]
     Secret = ENV["JWT_SECRET"]
 
-    def self.auth(header : String?)
-      match = /^(Bearer|Token) (?<token>.+)$/.match(header.not_nil!)
-      payload, token_header = JWT.decode(match.not_nil!["token"], Secret, Algorithm)
-      id = payload.as(Hash)["id"].as(Int64)
+    def self.auth(header : String)
+      match = /^(Bearer|Token) (?<token>.+)$/.match(header)
+      token = match.not_nil!["token"]
+
+      t_payload, t_header = JWT.decode(token, Secret, Algorithm)
+      
+      id = t_payload.as(Hash)["id"].as(Int64)
       user = Repo.get!(Realworld::Models::User, id, Repo::Query.preload(:followed_users))
     end
 
