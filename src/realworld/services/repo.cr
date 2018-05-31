@@ -6,6 +6,7 @@ module Realworld::Services
     extend Crecto::Repo
 
     Query = Crecto::Repo::Query
+    Multi = Crecto::Repo::Multi
 
     config do |conf|
       conf.adapter = Crecto::Adapters::Mysql
