@@ -8,24 +8,21 @@ module Realworld::Actions::Profile
     include Realworld::Services
     include Realworld::Models
     
-    def call(env, user)
-      if user
-        p_owner = Repo.get_by(User, username: env.params.url["username"])
-        if p_owner
-          if user.followed_users.select {|fu| fu.followed_user_id == p_owner.id}.size == 0
-            following = Following.new
-            following.follower_user_id = user.id
-            following.followed_user_id = p_owner.id
+    def call(env)
+      user = env.get("auth").as(Realworld::Models::User)
+      p_owner = Repo.get_by(User, username: env.params.url["username"])
+      if p_owner
+        if user.followed_users.select {|fu| fu.followed_user_id == p_owner.id}.size == 0
+          following = Following.new
+          following.follower_user_id = user.id
+          following.followed_user_id = p_owner.id
 
-            Repo.insert(following)
+          Repo.insert(following)
 
-            user.followed_users << following
-          end
-
-          # TODO: Return success
-        else
-          # TODO: Return error
+          user.followed_users << following
         end
+
+        # TODO: Return success
       else
         # TODO: Return error
       end

@@ -1,5 +1,4 @@
 require "kemal"
-require "./models/user"
 require "./actions/**"
 
 module Realworld
@@ -13,25 +12,25 @@ module Realworld
   end
 
   get "/api/user" do |env|
-    Realworld::Actions::User::CurrentUser.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::User::CurrentUser.new.call(env)
   end
 
   put "/api/user" do |env|
-    Realworld::Actions::User::UpdateCurrent.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::User::UpdateCurrent.new.call(env)
   end
 
 
 
   get "/api/profiles/:username" do |env|
-    Realworld::Actions::Profile::Get.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Profile::Get.new.call(env)
   end
 
   post "/api/profiles/:username/follow" do |env|
-    Realworld::Actions::Profile::Follow.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Profile::Follow.new.call(env)
   end
 
   delete "/api/profiles/:username/follow" do |env|
-    Realworld::Actions::Profile::Unfollow.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Profile::Unfollow.new.call(env)
   end
 
 
@@ -41,7 +40,7 @@ module Realworld
   end
 
   get "/api/articles/feed" do |env|
-    Realworld::Actions::Article::Feed.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Article::Feed.new.call(env)
   end
 
   get "/api/articles/:slug" do |env|
@@ -49,23 +48,23 @@ module Realworld
   end
 
   post "/api/articles" do |env|
-    Realworld::Actions::Article::Create.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Article::Create.new.call(env)
   end
 
   put "/api/articles" do |env|
-    Realworld::Actions::Article::Update.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Article::Update.new.call(env)
   end
 
   delete "/api/articles/:slug" do |env|
-    Realworld::Actions::Article::Delete.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Article::Delete.new.call(env)
   end
 
   post "/api/articles/:slug/favorite" do |env|
-    Realworld::Actions::Article::Favorite.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Article::Favorite.new.call(env)
   end
 
   delete "/api/articles/:slug/favorite" do |env|
-    Realworld::Actions::Article::Unfavorite.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Article::Unfavorite.new.call(env)
   end
 
 
@@ -75,11 +74,11 @@ module Realworld
   end
   
   post "/api/articles/:slug/comments" do |env|
-    Realworld::Actions::Comment::Create.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Comment::Create.new.call(env)
   end
 
   delete "/api/articles/:slug/comments/:id" do |env|
-    Realworld::Actions::Comment::Delete.new.call(env, env.get("auth").as(Models::User?))
+    Realworld::Actions::Comment::Delete.new.call(env)
   end
 
 

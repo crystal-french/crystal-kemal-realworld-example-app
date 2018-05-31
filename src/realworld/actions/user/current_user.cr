@@ -2,12 +2,11 @@ require "../base"
 
 module Realworld::Actions::User
   class CurrentUser < Realworld::Actions::Base
-    def call(env, user)
-      if user
-        # TODO: return success
-      else
-        # TODO: return error
-      end
+    include Realworld::Models
+
+    def call(env)
+      user = env.get("auth").as(User)
+      # TODO: return success
     end
   end
 end

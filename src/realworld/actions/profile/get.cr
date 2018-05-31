@@ -7,7 +7,9 @@ module Realworld::Actions::Profile
     include Realworld::Services
     include Realworld::Models
     
-    def call(env, user)
+    def call(env)
+      user = env.get("auth").as(Realworld::Models::User?)
+      
       owner = Repo.get_by(User, username: env.params.url["username"])
       if owner
         # TODO: user.to_profile

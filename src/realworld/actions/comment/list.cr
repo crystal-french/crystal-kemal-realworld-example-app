@@ -9,6 +9,7 @@ module Realworld::Actions::Comment
     include Realworld::Models
     
     def call(env)
+      user = env.get("auth").as(User?)
       article = Repo.get_by(Article, slug: env.params.url["slug"])
       if article
         query = Repo::Query.where(article_id: article.id)
