@@ -17,12 +17,8 @@ module Realworld::Services
       user = Repo.get!(Realworld::Models::User, id, Repo::Query.preload(:followed_users))
     end
 
-    # TODO: Move somewhere else?
-    def self.generate_jwt(user : User)
-      payload = {
-        "id" => user.id,
-        "exp" => Time.now + 30.days
-      }
+    def self.jwt_for(user : User)
+      payload = { "id" => user.id, "exp" => Time.now + 30.days }
       JWT.encode(payload, Secret, Algorithm)
     end
   end
