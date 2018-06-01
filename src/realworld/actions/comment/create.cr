@@ -12,19 +12,14 @@ module Realworld::Actions::Comment
       user = env.get("auth").as(User)
       article = Repo.get_by(Article, slug: env.params.url["slug"])
       if article
-        parsed = parse_json_body(env.request.body)
-        if values = parsed["comment"]?
-          comment = Comment.new
-          comment.body = values["body"].as_s if values["body"]
-          comment.user = user
-          comment.article = article
+        comment = Comment.new
+        comment.body = env.params.json["comment"].as(Hash)["body"].as(String)
+        comment.user = user
+        comment.article = article
 
-          changeset = Repo.insert(comment)
-          if changeset.valid?
-            # TODO: return success
-          else
-            # TODO: return error
-          end
+        changeset = Repo.insert(comment)
+        if changeset.valid?
+          # TODO: return success
         else
           # TODO: return error
         end

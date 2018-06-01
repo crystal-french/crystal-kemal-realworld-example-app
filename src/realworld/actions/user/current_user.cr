@@ -1,4 +1,5 @@
 require "../base"
+require "../../models/user"
 
 module Realworld::Actions::User
   class CurrentUser < Realworld::Actions::Base

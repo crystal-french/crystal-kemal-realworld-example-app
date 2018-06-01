@@ -8,7 +8,9 @@ module Realworld::Actions::Tag
     include Realworld::Models
 
     def call(env)
-      tags = Repo.all(Tag)
+      query = Repo::Query.distinct("tags.name")
+      tags = Repo.all(Tag, query)
+      
       {"tags" => tags.map(&.name)}.to_json
     end
   end  

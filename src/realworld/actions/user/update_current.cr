@@ -1,4 +1,5 @@
 require "../base"
+require "../../models/user"
 require "../../services/repo"
 require "crypto/bcrypt/password"
 
@@ -9,20 +10,19 @@ module Realworld::Actions::User
     
     def call(env)
       user = env.get("auth").as(User)
-      parsed = parse_json_body(env.request.body)
-      if values = parsed["user"]?
-        user.hash = Crypto::Bcrypt::Password.create(values["password"].as_s).to_s if values["password"]?
-        user.username = values["username"].as_s if values["username"]?
-        user.email = values["email"].as_s if values["email"]?
-        user.image = values["image"].as_s if values["image"]?
-        user.bio = values["bio"].as_s if values["bio"]?
 
-        changeset = Repo.update(user)
-        if changeset.valid?
-          # TODO: Return success
-        else
-          # TODO: Return error
-        end
+      params = env.params.json["user"].as(Hash)
+      
+      user.username = params["username"].as(String) if params["username"]?
+      user.email = params["email"].as(String) if params["email"]?
+      user.image = params["image"].as(String) if params["image"]?
+      user.bio = params["bio"].as(String) if params["bio"]?
+      
+      user.hash = Crypto::Bcrypt::Password.create(params["password"].as(String)).to_s if params["password"]?
+
+      changeset = Repo.update(user)
+      if changeset.valid?
+        # TODO: Return success
       else
         # TODO: Return error
       end

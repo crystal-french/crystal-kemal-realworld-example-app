@@ -9,19 +9,12 @@ module Realworld::Actions::User
     include Realworld::Models
 
     def call(env)
-      parsed = parse_json_body(env.request.body)
-      if values = parsed["user"]?
+      email = env.params.json["user"].as(Hash)["email"].as(String)
+      password = env.params.json["user"].as(Hash)["password"].as(String)
 
-        email = values["email"]? ? values["email"].as_s : ""
-        password = values["password"]? ? values["password"].as_s : ""
-
-        user = Repo.get_by(User, email: email)
-        if user && Crypto::Bcrypt::Password.new(user.hash.not_nil!) == password
-          # TODO: Return success
-        else
-          # TODO: Return error
-        end
-        
+      user = Repo.get_by(User, email: email)
+      if user && Crypto::Bcrypt::Password.new(user.hash.not_nil!) == password
+        # TODO: Return success
       else
         # TODO: Return error
       end
