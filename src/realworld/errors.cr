@@ -1,3 +1,5 @@
+require "kemal"
+
 module Realworld
   class UnauthorizedException < Kemal::Exceptions::CustomException
     def initialize(context)

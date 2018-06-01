@@ -1,4 +1,5 @@
 require "../base"
+require "../../errors"
 require "../../models/article"
 require "../../models/comment"
 require "../../services/repo"
@@ -10,15 +11,16 @@ module Realworld::Actions::Comment
     
     def call(env)
       user = env.get("auth").as(User?)
-      article = Repo.get_by(Article, slug: env.params.url["slug"])
-      if article
-        query = Repo::Query.where(article_id: article.id)
-        comments = Repo.all(Comment, query)
+      
+      slug = env.params.url["slug"]
 
-        # TODO: return success
-      else
-        # TODO: return error
-      end
+      article = Repo.get_by(Article, slug: slug)
+      raise Realworld::NotFoundException.new(env) if !article
+
+      query = Repo::Query.where(article_id: article.id)
+      comments = Repo.all(Comment, query)
+
+      # TODO: return success
     end
   end
 end

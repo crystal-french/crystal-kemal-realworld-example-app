@@ -1,4 +1,5 @@
 require "../base"
+require "../../errors"
 require "../../models/user"
 require "../../services/repo"
 
@@ -8,15 +9,13 @@ module Realworld::Actions::Profile
     include Realworld::Models
     
     def call(env)
-      user = env.get("auth").as(Realworld::Models::User?)
+      user = env.get("auth").as(User?)
       
-      owner = Repo.get_by(User, username: env.params.url["username"])
-      if owner
-        # TODO: user.to_profile
-        # TODO: Return success
-      else
-        # TODO: Return error
-      end
+      p_owner = Repo.get_by(User, username: env.params.url["username"])
+      raise Realworld::NotFoundException.new(env) if !p_owner
+
+      # TODO: user.to_profile
+      # TODO: Return success
     end
   end
 end

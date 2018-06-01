@@ -1,4 +1,5 @@
 require "../base"
+require "../../errors"
 require "../../models/user"
 require "../../models/article"
 require "../../services/repo"
@@ -14,16 +15,22 @@ module Realworld::Actions::Article
       slug = env.params.url["slug"]
 
       article = Repo.get_by(Article, slug: slug)
-      if article && article.user_id == user.id
+      raise Realworld::NotFoundException.new(env) if !article
+
+      if article.user_id == user.id
         article.tags = Repo.get_association(article, :tags).as(Array(Tag))
         changeset = Repo.delete(article)
-        if changeset.valid?
-          # Return nothing :D
-        else
-          # TODO: Return error
+        if !changeset.valid?
+          errors = {} of String => Array(String)
+          changeset.errors.reduce(errors) do |memo, error|
+            memo[error[:field]] = memo[error[:field]]? || [] of String
+            memo[error[:field]] << error[:message]
+            memo
+          end
+          raise Realworld::UnprocessableEntityException.new(env, errors)
         end
       else
-        # TODO: Return error
+        raise Realworld::ForbiddenException.new(env)
       end
     end
   end

@@ -1,4 +1,5 @@
 require "../base"
+require "../../errors"
 require "../../models/user"
 require "../../models/article"
 require "../../services/repo"
@@ -31,7 +32,13 @@ module Realworld::Actions::Article
       if changeset.valid?
         # TODO: Return success
       else
-        # TODO: Return error
+        errors = {} of String => Array(String)
+        changeset.errors.reduce(errors) do |memo, error|
+          memo[error[:field]] = memo[error[:field]]? || [] of String
+          memo[error[:field]] << error[:message]
+          memo
+        end
+        raise Realworld::UnprocessableEntityException.new(env, errors)
       end
     end
   end

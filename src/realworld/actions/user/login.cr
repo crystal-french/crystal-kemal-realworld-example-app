@@ -1,4 +1,5 @@
 require "../base"
+require "../../errors"
 require "../../models/user"
 require "../../services/repo"
 require "crypto/bcrypt/password"
@@ -16,7 +17,8 @@ module Realworld::Actions::User
       if user && Crypto::Bcrypt::Password.new(user.hash.not_nil!) == password
         # TODO: Return success
       else
-        # TODO: Return error
+        errors = {"body" => ["Invalid username or password"]}
+        raise Realworld::UnprocessableEntityException.new(env, errors)
       end
     end
 
