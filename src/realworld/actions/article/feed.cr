@@ -1,12 +1,30 @@
 require "../base"
+require "../../errors"
+require "../../models/user"
+require "../../models/article"
+require "../../models/following"
+require "../../services/repo"
 
 module Realworld::Actions::Article
   class Feed < Realworld::Actions::Base
     include Realworld::Models
+    include Realworld::Services
 
     def call(env)
       user = env.get("auth").as(User)
-      # TODO: Logic
+
+      query_limit = env.params.query["limit"]?
+      query_offset = env.params.query["offset"]?
+
+      limit = query_limit.to_s.to_i? || 20
+      offset = query_limit.to_s.to_i? || 0
+
+      followed_user_ids = user.followed_users.map(&.followed_user_id)
+
+      query = Repo::Query.where(user_id: followed_user_ids).order_by("articles.created_at DESC").limit(limit).offset(offset)
+      articles = Repo.all(Article, query)
+
+      # TODO: Return response
     end
   end
 end

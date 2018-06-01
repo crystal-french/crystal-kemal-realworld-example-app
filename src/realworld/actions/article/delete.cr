@@ -2,6 +2,7 @@ require "../base"
 require "../../errors"
 require "../../models/user"
 require "../../models/article"
+require "../../models/tag"
 require "../../services/repo"
 
 module Realworld::Actions::Article

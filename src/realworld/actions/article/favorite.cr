@@ -16,23 +16,21 @@ module Realworld::Actions::Article
 
       article = Repo.get_by(Realworld::Models::Article, slug: slug)
       raise Realworld::NotFoundException.new(env) if !article
+      raise Realworld::ForbiddenException.new(env) if article.user_id == user.id
+
+      article.favorites = Repo.get_association(article, :favorites).as(Array(Realworld::Models::Favorite))
       
-      if article.user_id != user.id
-        article.favorites = Repo.get_association(article, :favorites).as(Array(Realworld::Models::Favorite))
-        if article.favorites.select {|f| f.user_id == user.id}.size == 0
-          fave = Realworld::Models::Favorite.new
-          fave.article = article
-          fave.user = user
+      if article.favorites.select {|f| f.user_id == user.id}.size == 0
+        fave = Realworld::Models::Favorite.new
+        fave.article = article
+        fave.user = user
 
-          changeset = Repo.insert(fave)
+        changeset = Repo.insert(fave)
 
-          article.favorites << changeset.instance
-        end
-
-        # TODO: Return success
-      else
-        raise Realworld::ForbiddenException.new(env)
+        article.favorites << changeset.instance
       end
+
+      # TODO: Return success
     end
   end
 end
