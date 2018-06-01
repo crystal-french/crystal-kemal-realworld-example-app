@@ -1,9 +1,9 @@
 -- +micrate Up
 -- SQL in section 'Up' is executed when this migration is applied
 CREATE TABLE realworld.tags (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	article_id INT UNSIGNED NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	CONSTRAINT tags_PK PRIMARY KEY (id)
+	CONSTRAINT tags_articles_FK FOREIGN KEY (article_id) REFERENCES realworld.articles(id)
 );
 
 -- +micrate Down

@@ -5,7 +5,6 @@ require "./tag"
 require "./user"
 require "./comment"
 require "./favorite"
-require "./tag_usage"
 
 module Realworld::Models
   class Article < Crecto::Model
@@ -14,10 +13,9 @@ module Realworld::Models
       field :title       , String
       field :body        , String
       field :description , String
-      has_many :tag_usages, TagUsage, dependent: :destroy
       has_many :favorites, Favorite, dependent: :destroy
       has_many :comments, Comment, dependent: :destroy
-      has_many :tags, Tag, through: :tag_usages
+      has_many :tags, Tag, dependent: :destroy
       belongs_to :user, User
     end
 

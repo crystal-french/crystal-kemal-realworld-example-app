@@ -2,7 +2,6 @@ require "crecto"
 require "mysql"
 
 require "./article"
-require "./tag_usage"
 
 module Realworld::Models
   class Tag < Crecto::Model
@@ -11,11 +10,9 @@ module Realworld::Models
 
     schema :tags do
       field :name, String
-      has_many :usages, TagUsage
-      has_many :articles, Article, through: :usages
+      belongs_to :article, Article
     end
 
-    validate_required [:name]
-    unique_constraint :name
+    validate_required [:name, :article]
   end
 end

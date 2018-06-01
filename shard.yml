@@ -23,6 +23,8 @@ dependencies:
   crecto:
     github: fridgerator/crecto
     version: ~> 0.8.6
+  micrate:
+    github: amberframework/micrate
 
 targets:  
   realworld:
