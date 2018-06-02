@@ -18,7 +18,7 @@ module Realworld::Actions::Comment
       article = Repo.get_by(Article, slug: slug)
       raise Realworld::NotFoundException.new(env) if !article
 
-      query = Repo::Query.where(article_id: article.id)
+      query = Repo::Query.where(article_id: article.id).preload(:user)
       comments = Repo.all(Comment, query)
 
       response = {"comments" => comments.map { |comment| Realworld::Decorators::Comment.new(comment, user) }}

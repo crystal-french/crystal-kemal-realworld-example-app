@@ -26,7 +26,8 @@ module Realworld::Actions::Comment
 
       changeset = Repo.insert(comment)
       if changeset.valid?
-        response = {"comment" => Realworld::Decorators::Comment.new(changeset.instance, user)}
+        comment.id = changeset.instance.id
+        response = {"comment" => Realworld::Decorators::Comment.new(comment, user)}
         response.to_json
       else
         errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}

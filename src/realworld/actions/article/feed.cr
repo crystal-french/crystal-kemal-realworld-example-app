@@ -26,7 +26,7 @@ module Realworld::Actions::Article
       query = query.preload([:user, :favorites, :tags])
       articles = Repo.all(Article, query)
 
-      response = {"articles" => articles.map { |article| Realworld::Decorators::Article.new(article, user) }}
+      response = {"articles" => articles.map { |article| Realworld::Decorators::Article.new(article, user) }, "articlesCount" => articles.size}
       response.to_json
     end
   end
