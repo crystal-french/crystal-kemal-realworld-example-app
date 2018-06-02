@@ -24,8 +24,8 @@ module Realworld::Decorators
         builder.field("tagList") do
           TagList.new(@article.tags).to_json(builder)
         end
-        builder.field("createdAt", @article.created_at.not_nil!.to_s("%FT%X%z").gsub(/\+0000/, "Z"))
-        builder.field("updatedAt", @article.updated_at.not_nil!.to_s("%FT%X%z").gsub(/\+0000/, "Z"))
+        builder.field("createdAt", @article.created_at.not_nil!.to_s("%FT%X.%L%z").gsub(/\+0000/, "Z"))
+        builder.field("updatedAt", @article.updated_at.not_nil!.to_s("%FT%X.%L%z").gsub(/\+0000/, "Z"))
         builder.field("favorited", favorited)
         builder.field("favoritesCount", @article.favorites.size)
         builder.field("author") do

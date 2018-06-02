@@ -12,8 +12,8 @@ module Realworld::Decorators
       
       builder.object do
         builder.field("id", @comment.id)
-        builder.field("createdAt", @comment.created_at.not_nil!.to_s("%FT%X%z").gsub(/\+0000/, "Z"))
-        builder.field("updatedAt", @comment.updated_at.not_nil!.to_s("%FT%X%z").gsub(/\+0000/, "Z"))
+        builder.field("createdAt", @comment.created_at.not_nil!.to_s("%FT%X.%L%z").gsub(/\+0000/, "Z"))
+        builder.field("updatedAt", @comment.updated_at.not_nil!.to_s("%FT%X.%L%z").gsub(/\+0000/, "Z"))
         builder.field("body", @comment.body)
         builder.field("author") do
           Profile.new(@comment.user, @viewer).to_json(builder)
