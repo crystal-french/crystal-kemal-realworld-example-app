@@ -51,7 +51,7 @@ module Realworld
     Realworld::Actions::Article::Create.new.call(env)
   end
 
-  put "/api/articles" do |env|
+  put "/api/articles/:slug" do |env|
     Realworld::Actions::Article::Update.new.call(env)
   end
 
