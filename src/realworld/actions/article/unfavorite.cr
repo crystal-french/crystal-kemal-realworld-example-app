@@ -23,7 +23,7 @@ module Realworld::Actions::Article
       query = Repo::Query.where(article_id: article.id, user_id: user.id)
       changeset = Repo.delete_all(Favorite, query)
 
-      article = Repo.get!(Article, article.id, Query.preload([:tags, :favorites, :user]))
+      article = Repo.get!(Article, article.id, Repo::Query.preload([:tags, :favorites, :user]))
 
       response = {"article" => Realworld::Decorators::Article.new(article, user)}
       response.to_json
