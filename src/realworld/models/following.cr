@@ -12,5 +12,7 @@ module Realworld::Models
       belongs_to :follower_user, User, foreign_key: :follower_user_id
       belongs_to :followed_user, User, foreign_key: :followed_user_id
     end
+
+    validate_required [:follower_user_id, :followed_user_id]
   end
 end

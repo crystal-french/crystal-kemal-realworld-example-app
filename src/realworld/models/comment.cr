@@ -12,6 +12,6 @@ module Realworld::Models
       belongs_to :article, Article
     end
 
-    validate_required [:body, :user, :article]
+    validate_required [:body, :user_id, :article_id]
   end
 end

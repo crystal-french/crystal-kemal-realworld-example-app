@@ -19,6 +19,6 @@ module Realworld::Models
       belongs_to :user, User
     end
 
-    validate_required [:slug, :title, :body, :description, :user]
+    validate_required [:slug, :title, :body, :description, :user_id]
   end
 end

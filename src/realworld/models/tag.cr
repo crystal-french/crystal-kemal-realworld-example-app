@@ -8,11 +8,11 @@ module Realworld::Models
     set_created_at_field nil
     set_updated_at_field nil
 
-    schema :tags do
+    schema :tags, primary_key: false do
       field :name, String
       belongs_to :article, Article
     end
 
-    validate_required [:name, :article]
+    validate_required [:name, :article_id]
   end
 end

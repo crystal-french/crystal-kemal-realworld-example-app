@@ -13,5 +13,7 @@ module Realworld::Models
       belongs_to :user, User
       belongs_to :article, Article
     end
+
+    validate_required [:user_id, :article_id]
   end
 end
