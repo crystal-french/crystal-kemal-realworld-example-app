@@ -18,7 +18,7 @@ module Realworld::Services
     end
 
     def self.jwt_for(user : Realworld::Models::User)
-      payload = { "id" => user.id, "exp" => Time.now + 30.days }
+      payload = { "id" => user.id, "exp" => (Time.now + 30.days).epoch }
       JWT.encode(payload, Secret, Algorithm)
     end
   end
