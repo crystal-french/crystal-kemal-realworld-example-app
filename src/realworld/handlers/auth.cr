@@ -18,7 +18,9 @@ module Realworld::Handlers
         env.response.status_code = 401
         env.response.print ""
         env.response.close
+        return
       end
+      call_next(env)
     end
   end
 
@@ -34,6 +36,7 @@ module Realworld::Handlers
       rescue exception
         env.set "auth", nil
       end
+      call_next(env)
     end
   end
 end
