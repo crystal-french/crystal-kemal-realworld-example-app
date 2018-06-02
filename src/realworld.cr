@@ -16,11 +16,7 @@ add_handler(Realworld::Handlers::AuthOptionalHandler.new)
 error 401 {|env| ""}
 error 403 {|env| ""}
 error 404 {|env| ""}
-
-error 422 do |env, exception| 
-  errors = exception.as(Realworld::UnprocessableEntityException).content
-  {"errors" => errors}.to_json
-end
+error 422 {|env, exception| exception.as(Realworld::UnprocessableEntityException).content}
 
 before_all {|env| env.response.content_type = "application/json"}
 

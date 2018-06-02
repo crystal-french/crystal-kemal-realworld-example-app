@@ -4,6 +4,7 @@ require "../../models/user"
 require "../../models/article"
 require "../../models/favorite"
 require "../../services/repo"
+require "../../decorators/article"
 
 module Realworld::Actions::Article
   class Favorite < Realworld::Actions::Base
@@ -18,7 +19,7 @@ module Realworld::Actions::Article
       raise Realworld::NotFoundException.new(env) if !article
       raise Realworld::ForbiddenException.new(env) if article.user_id == user.id
 
-      article.favorites = Repo.get_association(article, :favorites).as(Array(Realworld::Models::Favorite))
+      article = Repo.get!(Realworld::Models::Article, article.id, Repo::Query.preload([:favorites, :tags, :user]))
       
       if article.favorites.select {|f| f.user_id == user.id}.size == 0
         fave = Realworld::Models::Favorite.new
@@ -30,7 +31,8 @@ module Realworld::Actions::Article
         article.favorites << changeset.instance
       end
 
-      # TODO: Return success
+      response = {"article" => Realworld::Decorators::Article.new(article, user)}
+      response.to_json
     end
   end
 end

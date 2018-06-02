@@ -2,6 +2,8 @@ require "../base"
 require "../../errors"
 require "../../models/user"
 require "../../services/repo"
+require "../../decorators/errors"
+require "../../decorators/user"
 require "crypto/bcrypt/password"
 
 module Realworld::Actions::User
@@ -15,10 +17,11 @@ module Realworld::Actions::User
 
       user = Repo.get_by(User, email: email)
       if user && Crypto::Bcrypt::Password.new(user.hash.not_nil!) == password
-        # TODO: Return success
+        response = {"user" => Realworld::Decorators::User.new(user)}
+        response.to_json
       else
-        errors = {"body" => ["Invalid username or password"]}
-        raise Realworld::UnprocessableEntityException.new(env, errors)
+        errors = {"errors" => Realworld::Decorators::Errors.new({"body" => ["Invalid username or password"]})}
+        raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
       end
     end
 

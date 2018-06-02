@@ -4,6 +4,7 @@ require "../../models/user"
 require "../../models/article"
 require "../../models/tag"
 require "../../services/repo"
+require "../../decorators/errors"
 
 module Realworld::Actions::Article
   class Delete < Realworld::Actions::Base
@@ -22,13 +23,8 @@ module Realworld::Actions::Article
         article.tags = Repo.get_association(article, :tags).as(Array(Tag))
         changeset = Repo.delete(article)
         if !changeset.valid?
-          errors = {} of String => Array(String)
-          changeset.errors.reduce(errors) do |memo, error|
-            memo[error[:field]] = memo[error[:field]]? || [] of String
-            memo[error[:field]] << error[:message]
-            memo
-          end
-          raise Realworld::UnprocessableEntityException.new(env, errors)
+          errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}
+          raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
         end
       else
         raise Realworld::ForbiddenException.new(env)

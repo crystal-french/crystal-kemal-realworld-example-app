@@ -4,6 +4,7 @@ require "../../models/user"
 require "../../models/article"
 require "../../models/favorite"
 require "../../services/repo"
+require "../../decorators/article"
 
 module Realworld::Actions::Article
   class Unfavorite < Realworld::Actions::Base
@@ -22,9 +23,10 @@ module Realworld::Actions::Article
       query = Repo::Query.where(article_id: article.id, user_id: user.id)
       changeset = Repo.delete_all(Favorite, query)
 
-      article.favorites = Repo.get_association(article, :favorites).as(Array(Realworld::Models::Favorite))
+      article = Repo.get!(Article, article.id, Query.preload([:tags, :favorites, :user]))
 
-      # TODO: Return success
+      response = {"article" => Realworld::Decorators::Article.new(article, user)}
+      response.to_json
     end
   end
 end

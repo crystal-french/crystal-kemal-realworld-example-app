@@ -3,6 +3,7 @@ require "../../errors"
 require "../../models/user"
 require "../../models/article"
 require "../../services/repo"
+require "../../decorators/article"
 
 module Realworld::Actions::Article
   class List < Realworld::Actions::Base
@@ -37,7 +38,8 @@ module Realworld::Actions::Article
 
       articles = Repo.all(Article, query)
 
-      # TODO: Return success
+      response = {"articles" => articles.map { |article| Realworld::Decorators::Article.new(article, user) }}
+      response.to_json
     end
   end
 end

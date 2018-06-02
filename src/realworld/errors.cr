@@ -23,7 +23,7 @@ module Realworld
   end
 
   class UnprocessableEntityException < Kemal::Exceptions::CustomException
-    def initialize(context, @content = {} of String => Array(String))
+    def initialize(context, @content = "")
       context.response.status_code = 422
       super(context)
     end

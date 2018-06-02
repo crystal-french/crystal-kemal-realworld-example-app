@@ -1,6 +1,7 @@
 require "../base"
 require "../../models/tag"
 require "../../services/repo"
+require "../../decorators/tag_list"
 
 module Realworld::Actions::Tag
   class List < Realworld::Actions::Base
@@ -11,7 +12,8 @@ module Realworld::Actions::Tag
       query = Repo::Query.distinct("tags.name")
       tags = Repo.all(Tag, query)
       
-      {"tags" => tags.map(&.name)}.to_json
+      response = {"tags" => Realworld::Decorators::TagList.new(tags)}
+      response.to_json
     end
   end  
 end

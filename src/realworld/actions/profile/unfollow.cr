@@ -3,6 +3,7 @@ require "../../errors"
 require "../../models/user"
 require "../../models/following"
 require "../../services/repo"
+require "../../decorators/profile"
 
 module Realworld::Actions::Profile
   class Unfollow < Realworld::Actions::Base
@@ -22,7 +23,8 @@ module Realworld::Actions::Profile
         user.followed_users.delete(following)
       end
 
-      # TODO: Return success
+      response = {"profile" => Realworld::Decorators::Profile.new(p_owner, user)}
+      response.to_json
     end
   end
 end

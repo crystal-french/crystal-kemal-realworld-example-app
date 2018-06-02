@@ -3,6 +3,7 @@ require "../../errors"
 require "../../models/user"
 require "../../models/following"
 require "../../services/repo"
+require "../../decorators/profile"
 
 module Realworld::Actions::Profile
   class Follow < Realworld::Actions::Base
@@ -25,7 +26,8 @@ module Realworld::Actions::Profile
         user.followed_users << following
       end
 
-      # TODO: Return success
+      response = {"profile" => Realworld::Decorators::Profile.new(p_owner, user)}
+      response.to_json
     end
   end
 end

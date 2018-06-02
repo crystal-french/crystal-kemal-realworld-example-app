@@ -1,5 +1,6 @@
 require "../base"
 require "../../models/user"
+require "../../decorators/user"
 
 module Realworld::Actions::User
   class CurrentUser < Realworld::Actions::Base
@@ -7,7 +8,9 @@ module Realworld::Actions::User
 
     def call(env)
       user = env.get("auth").as(User)
-      # TODO: return success
+      
+      response = {"user" => Realworld::Decorators::User.new(user)}
+      response.to_json
     end
   end
 end

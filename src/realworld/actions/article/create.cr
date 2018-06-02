@@ -3,6 +3,8 @@ require "../../errors"
 require "../../models/user"
 require "../../models/article"
 require "../../services/repo"
+require "../../decorators/article"
+require "../../decorators/errors"
 
 module Realworld::Actions::Article
   class Create < Realworld::Actions::Base
@@ -30,15 +32,11 @@ module Realworld::Actions::Article
 
       changeset = Repo.insert(article)
       if changeset.valid?
-        # TODO: Return success
+        response = {"article" => Realworld::Decorators::Article.new(changeset.instance, user)}
+        response.to_json
       else
-        errors = {} of String => Array(String)
-        changeset.errors.reduce(errors) do |memo, error|
-          memo[error[:field]] = memo[error[:field]]? || [] of String
-          memo[error[:field]] << error[:message]
-          memo
-        end
-        raise Realworld::UnprocessableEntityException.new(env, errors)
+        errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}
+        raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
       end
     end
   end
