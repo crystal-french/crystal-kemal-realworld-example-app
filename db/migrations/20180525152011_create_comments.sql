@@ -5,6 +5,8 @@ CREATE TABLE realworld.comments (
 	body TEXT NOT NULL,
 	user_id INT UNSIGNED NOT NULL,
 	article_id INT UNSIGNED NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT comments_PK PRIMARY KEY (id),
 	CONSTRAINT comments_articles_FK FOREIGN KEY (article_id) REFERENCES realworld.articles(id),
 	CONSTRAINT comments_users_FK FOREIGN KEY (user_id) REFERENCES realworld.users(id)
