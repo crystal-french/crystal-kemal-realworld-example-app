@@ -24,12 +24,34 @@ module Realworld::Actions::Article
       article.body  = params["body"].as(String) if params["body"]?
       article.title = params["title"].as(String) if params["title"]?
       article.description = params["description"].as(String) if params["description"]?
-
+      
       article.slug = article.title.not_nil!.downcase.gsub(/[^\w]/, "").gsub(/\s+/, "-")
+
+      article.tags = Repo.get_association(article, :tags).as(Array(Tag))
+      article.favorites = Repo.get_association(article, :favorites).as(Array(Favorite))
+      article.user = user
+
+      new_tags = params["tagList"]?.try do |tag_array|
+        ta = tag_array.as(Array).map do |tag_name|
+          Tag.new.tap do |t|
+            t.article = article
+            t.name = tag_name.as(String)
+          end
+        end
+        ta.uniq
+      end
 
       changeset = Repo.update(article)
       if changeset.valid?
-        response = {"article" => Realworld::Decorators::Article.new(changeset.instance, user)}
+        if new_tags
+          Repo.delete_all(Tag, Repo::Query.where(article_id: article.id))
+          new_tags.each do |nt|
+            Repo.insert(nt)  
+          end
+          article.tags = new_tags
+        end
+
+        response = {"article" => Realworld::Decorators::Article.new(article, user)}
         response.to_json
       else
         errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}
