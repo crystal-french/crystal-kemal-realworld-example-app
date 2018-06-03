@@ -10,15 +10,14 @@ require "kemal"
 
 add_context_storage_type(Realworld::Models::User?)
 
+add_handler(Realworld::Handlers::ContentTypeHandler.new)
+add_handler(Realworld::Handlers::CorsHandler.new)
 add_handler(Realworld::Handlers::AuthRequiredHandler.new)
 add_handler(Realworld::Handlers::AuthOptionalHandler.new)
 
-error 401 {|env| ""}
-error 403 {|env| ""}
-error 404 {|env| ""}
-error 422 {|env, exception| exception.as(Realworld::UnprocessableEntityException).content}
-
-before_all {|env| env.response.content_type = "application/json"}
-before_all {|env| env.response.headers["Access-Control-Allow-Origin"] = "*"}
+error 401 {|env| {"status" => 401, "error" => "Unauthorized"}.to_json }
+error 403 {|env| {"status" => 403, "error" => "Forbidden"}.to_json }
+error 404 {|env| {"status" => 404, "error" => "Not Found"}.to_json }
+error 422 {|env, exception| exception.as(Realworld::UnprocessableEntityException).content }
 
 Kemal.run
