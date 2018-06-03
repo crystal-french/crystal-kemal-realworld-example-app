@@ -86,4 +86,12 @@ module Realworld
   get "/api/tags" do |env|
     Realworld::Actions::Tag::List.new.call(env)
   end  
+
+  # Ugly workaround for CORS
+  options "/api/*" do |env|
+    env.response.headers["Access-Control-Allow-Origin"] = "*"
+    env.response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    env.response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept, Authorization"
+    halt(env, 200)
+  end
 end

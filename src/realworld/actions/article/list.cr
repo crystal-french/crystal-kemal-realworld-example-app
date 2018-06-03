@@ -17,15 +17,12 @@ module Realworld::Actions::Article
       filter_author = env.params.query["author"]?
       filter_favorited_by = env.params.query["favorited"]?
 
-      query_limit = env.params.query["limit"]?
-      query_offset = env.params.query["offset"]?
+      limit = env.params.query["limit"]?.try(&.to_i) || 20
+      offset = env.params.query["offset"]?.try(&.to_i) || 0
 
-      limit = query_limit.to_s.to_i? || 20
-      offset = query_limit.to_s.to_i? || 0
-
-      query = Repo::Query.join(:user).order_by("articles.created_at DESC").limit(limit).offset(offset)
+      query = Repo::Query.order_by("articles.created_at DESC").limit(limit).offset(offset)
       query = query.join(:tags).where("tags.name = ?", filter_tag) if filter_tag
-      query = query.where("users.username = ?", filter_author) if filter_author
+      query = query.join(:user).where("users.username = ?", filter_author) if filter_author
       
       if filter_favorited_by
         user_favorited_by = Repo.get_by(User, username: filter_favorited_by)

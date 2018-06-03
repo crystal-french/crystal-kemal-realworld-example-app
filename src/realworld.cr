@@ -19,5 +19,6 @@ error 404 {|env| ""}
 error 422 {|env, exception| exception.as(Realworld::UnprocessableEntityException).content}
 
 before_all {|env| env.response.content_type = "application/json"}
+before_all {|env| env.response.headers["Access-Control-Allow-Origin"] = "*"}
 
 Kemal.run

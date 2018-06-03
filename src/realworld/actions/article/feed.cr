@@ -14,11 +14,8 @@ module Realworld::Actions::Article
     def call(env)
       user = env.get("auth").as(User)
 
-      query_limit = env.params.query["limit"]?
-      query_offset = env.params.query["offset"]?
-
-      limit = query_limit.to_s.to_i? || 20
-      offset = query_limit.to_s.to_i? || 0
+      limit = env.params.query["limit"]?.try(&.to_i) || 20
+      offset = env.params.query["offset"]?.try(&.to_i) || 0
 
       followed_user_ids = user.followed_users.map(&.followed_user_id)
 
