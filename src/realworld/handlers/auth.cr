@@ -15,10 +15,7 @@ module Realworld::Handlers
       begin
         env.set "auth", Auth.auth(env.request.headers["Authorization"])
       rescue exception
-        env.response.status_code = 401
-        env.response.print ""
-        env.response.close
-        return
+        raise Realworld::UnauthorizedException.new(env)
       end
       call_next(env)
     end
