@@ -5,6 +5,7 @@ require "./realworld/handlers/*"
 require "./realworld/version"
 require "./realworld/errors"
 require "./realworld/routes"
+require "./realworld/config"
 
 require "kemal"
 
