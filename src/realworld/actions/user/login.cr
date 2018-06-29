@@ -12,8 +12,10 @@ module Realworld::Actions::User
     include Realworld::Models
 
     def call(env)
-      email = env.params.json["user"].as(Hash)["email"].as(String)
-      password = env.params.json["user"].as(Hash)["password"].as(String)
+      params = env.params.json["user"].as(Hash) 
+
+      email = params["email"].as_s
+      password = params["password"].as_s
 
       user = Repo.get_by(User, email: email)
       if user && Crypto::Bcrypt::Password.new(user.hash.not_nil!) == password

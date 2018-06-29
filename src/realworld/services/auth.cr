@@ -4,22 +4,22 @@ require "../models/user"
 
 module Realworld::Services
   class Auth
-    Algorithm = ENV["JWT_ALGORITHM"]
-    Secret = ENV["JWT_SECRET"]
+    ALGORITHM = ENV["JWT_ALGORITHM"]
+    SECRET    = ENV["JWT_SECRET"]
 
     def self.auth(header : String)
       match = /^(Bearer|Token) (?<token>.+)$/.match(header)
-      token = match.not_nil!["token"]
+      raise "Invalid Authorization string" if !match
 
-      t_payload, t_header = JWT.decode(token, Secret, Algorithm)
+      token_payload, token_header = JWT.decode(match["token"], SECRET, ALGORITHM)
       
-      id = t_payload.as(Hash)["id"].as(Int64)
+      id = token_payload["id"].as_i64
       user = Repo.get!(Realworld::Models::User, id, Repo::Query.preload(:followed_users))
     end
 
     def self.jwt_for(user : Realworld::Models::User)
       payload = { "id" => user.id, "exp" => (Time.now + 30.days).epoch }
-      JWT.encode(payload, Secret, Algorithm)
+      JWT.encode(payload, SECRET, ALGORITHM)
     end
   end
 end

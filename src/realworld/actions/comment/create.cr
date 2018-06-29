@@ -19,8 +19,10 @@ module Realworld::Actions::Comment
       article = Repo.get_by(Article, slug: slug)
       raise Realworld::NotFoundException.new(env) if !article
 
+      params = env.params.json["comment"].as(Hash)
+
       comment = Comment.new
-      comment.body = env.params.json["comment"].as(Hash)["body"].as(String)
+      comment.body = params["body"].as_s
       comment.user = user
       comment.article = article
 

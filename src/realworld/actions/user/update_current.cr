@@ -16,12 +16,12 @@ module Realworld::Actions::User
 
       params = env.params.json["user"].as(Hash)
       
-      user.username = params["username"].as(String) if params["username"]?
-      user.email = params["email"].as(String) if params["email"]?
-      user.image = params["image"].as(String) if params["image"]?
-      user.bio = params["bio"].as(String) if params["bio"]?
+      user.username = params["username"].as_s if params["username"]?
+      user.email = params["email"].as_s if params["email"]?
+      user.image = params["image"].as_s if params["image"]?
+      user.bio = params["bio"].as_s if params["bio"]?
       
-      user.hash = Crypto::Bcrypt::Password.create(params["password"].as(String)).to_s if params["password"]?
+      user.hash = Crypto::Bcrypt::Password.create(params["password"].as_s).to_s if params["password"]?
 
       changeset = Repo.update(user)
       if changeset.valid?

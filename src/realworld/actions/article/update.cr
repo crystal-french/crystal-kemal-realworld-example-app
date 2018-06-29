@@ -21,9 +21,9 @@ module Realworld::Actions::Article
       raise Realworld::NotFoundException.new(env) if !article
       raise Realworld::ForbiddenException.new(env) if article.user_id != user.id
 
-      article.body  = params["body"].as(String) if params["body"]?
-      article.title = params["title"].as(String) if params["title"]?
-      article.description = params["description"].as(String) if params["description"]?
+      article.body  = params["body"].as_s if params["body"]?
+      article.title = params["title"].as_s if params["title"]?
+      article.description = params["description"].as_s if params["description"]?
       
       article.slug = article.title.not_nil!.downcase.gsub(/[^\w]/, "").gsub(/\s+/, "-")
 
@@ -31,14 +31,11 @@ module Realworld::Actions::Article
       article.favorites = Repo.get_association(article, :favorites).as(Array(Favorite))
       article.user = user
 
-      new_tags = params["tagList"]?.try do |tag_array|
-        ta = tag_array.as(Array).map do |tag_name|
-          Tag.new.tap do |t|
-            t.article = article
-            t.name = tag_name.as(String)
-          end
+      new_tags = params["tagList"].as_a.uniq.map do |tag_name|
+        Tag.new.tap do |tag|
+          tag.article = article
+          tag.name = tag_name.as_s
         end
-        ta.uniq
       end
 
       changeset = Repo.update(article)

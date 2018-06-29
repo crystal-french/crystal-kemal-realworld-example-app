@@ -16,10 +16,12 @@ module Realworld::Actions::Article
     def call(env)
       user = env.get("auth").as(User)
       
+      params = env.params.json["article"].as(Hash)
+
       article = Article.new
-      article.title = env.params.json["article"].as(Hash)["title"].as(String)
-      article.body  = env.params.json["article"].as(Hash)["body"].as(String)
-      article.description = env.params.json["article"].as(Hash)["description"].as(String)
+      article.title = params["title"].as_s
+      article.body  = params["body"].as_s
+      article.description = params["description"].as_s
       
       article.slug = article.title.not_nil!.downcase.gsub(/[^\w ]/, "").gsub(/\s+/, "-")
       
@@ -31,14 +33,12 @@ module Realworld::Actions::Article
       if changeset.valid?
         article.id = changeset.instance.id
 
-        env.params.json["article"].as(Hash)["tagList"]?.try do |tag_list|
-          article.tags = tag_list.as(Array).uniq.map do |tag|
-            t = Tag.new
-            t.name = tag.as(String)
-            t.article = article
-            t_changeset = Repo.insert(t)
-            t_changeset.instance
-          end
+        article.tags = params["tagList"].as_a.uniq.map do |tag|
+          t = Tag.new
+          t.name = tag.as_s
+          t.article = article
+          t_changeset = Repo.insert(t)
+          t_changeset.instance
         end  
 
         response = {"article" => Realworld::Decorators::Article.new(article, user)}

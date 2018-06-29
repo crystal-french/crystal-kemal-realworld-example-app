@@ -12,9 +12,11 @@ module Realworld::Actions::User
     include Realworld::Models
 
     def call(env)
-      email = env.params.json["user"].as(Hash)["email"].as(String)
-      username = env.params.json["user"].as(Hash)["username"].as(String)
-      password = env.params.json["user"].as(Hash)["password"].as(String)
+      params = env.params.json["user"].as(Hash)
+
+      email = params["email"].as_s
+      username = params["username"].as_s
+      password = params["password"].as_s
 
       user = User.new
       user.email = email
