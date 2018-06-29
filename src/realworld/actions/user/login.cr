@@ -2,7 +2,6 @@ require "../base"
 require "../../errors"
 require "../../models/user"
 require "../../services/repo"
-require "../../decorators/errors"
 require "../../decorators/user"
 require "crypto/bcrypt/password"
 
@@ -22,7 +21,7 @@ module Realworld::Actions::User
         response = {"user" => Realworld::Decorators::User.new(user)}
         response.to_json
       else
-        errors = {"errors" => Realworld::Decorators::Errors.new({"body" => ["Invalid username or password"]})}
+        errors = {"errors" => {"body" => ["Invalid username or password"]}}
         raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
       end
     end

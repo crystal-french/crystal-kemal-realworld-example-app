@@ -4,7 +4,6 @@ require "../../models/user"
 require "../../models/article"
 require "../../services/repo"
 require "../../decorators/article"
-require "../../decorators/errors"
 
 module Realworld::Actions::Article
   class Update < Realworld::Actions::Base
@@ -51,7 +50,7 @@ module Realworld::Actions::Article
         response = {"article" => Realworld::Decorators::Article.new(article, user)}
         response.to_json
       else
-        errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}
+        errors = {"errors" => map_changeset_errors(changeset.errors)}
         raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
       end
     end

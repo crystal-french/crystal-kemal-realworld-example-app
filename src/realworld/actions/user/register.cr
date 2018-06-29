@@ -2,7 +2,6 @@ require "../base"
 require "../../errors"
 require "../../models/user"
 require "../../services/repo"
-require "../../decorators/errors"
 require "../../decorators/user"
 require "crypto/bcrypt/password"
 
@@ -28,7 +27,7 @@ module Realworld::Actions::User
         response = {"user" => Realworld::Decorators::User.new(changeset.instance)}
         response.to_json
       else
-        errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}
+        errors = {"errors" => map_changeset_errors(changeset.errors)}
         raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
       end
     end

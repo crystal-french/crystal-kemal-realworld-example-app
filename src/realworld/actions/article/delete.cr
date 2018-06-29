@@ -4,7 +4,6 @@ require "../../models/user"
 require "../../models/article"
 require "../../models/tag"
 require "../../services/repo"
-require "../../decorators/errors"
 
 module Realworld::Actions::Article
   class Delete < Realworld::Actions::Base
@@ -23,7 +22,7 @@ module Realworld::Actions::Article
         article.tags = Repo.get_association(article, :tags).as(Array(Tag))
         changeset = Repo.delete(article)
         if !changeset.valid?
-          errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}
+          errors = {"errors" => map_changeset_errors(changeset.errors)}
           raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
         end
       else

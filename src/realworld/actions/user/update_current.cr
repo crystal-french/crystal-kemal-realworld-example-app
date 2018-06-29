@@ -2,7 +2,6 @@ require "../base"
 require "../../errors"
 require "../../models/user"
 require "../../services/repo"
-require "../../decorators/errors"
 require "../../decorators/user"
 require "crypto/bcrypt/password"
 
@@ -18,8 +17,8 @@ module Realworld::Actions::User
       
       user.username = params["username"].as_s if params["username"]?
       user.email = params["email"].as_s if params["email"]?
-      user.image = params["image"].as_s if params["image"]?
-      user.bio = params["bio"].as_s if params["bio"]?
+      user.image = params["image"].as_s? if params["image"]?
+      user.bio = params["bio"].as_s? if params["bio"]?
       
       user.hash = Crypto::Bcrypt::Password.create(params["password"].as_s).to_s if params["password"]?
 
@@ -28,7 +27,7 @@ module Realworld::Actions::User
         response = {"user" => Realworld::Decorators::User.new(changeset.instance)}
         response.to_json
       else
-        errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}
+        errors = {"errors" => map_changeset_errors(changeset.errors)}
         raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
       end
     end

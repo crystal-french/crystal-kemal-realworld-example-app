@@ -3,7 +3,6 @@ require "../../errors"
 require "../../models/article"
 require "../../models/comment"
 require "../../services/repo"
-require "../../decorators/errors"
 
 module Realworld::Actions::Comment
   class Delete < Realworld::Actions::Base
@@ -27,7 +26,7 @@ module Realworld::Actions::Comment
       if article.id == comment.article_id && user.id == comment.user_id
         changeset = Repo.delete(comment)
         if !changeset.valid?
-          errors = {"errors" => Realworld::Decorators::Errors.new(changeset.errors)}
+          errors = {"errors" => map_changeset_errors(changeset.errors)}
           raise Realworld::UnprocessableEntityException.new(env, errors.to_json)
         end
       else

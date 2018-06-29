@@ -12,10 +12,10 @@ module Realworld::Actions::Profile
     def call(env)
       user = env.get("auth").as(User?)
       
-      p_owner = Repo.get_by(User, username: env.params.url["username"])
-      raise Realworld::NotFoundException.new(env) if !p_owner
+      profile_owner = Repo.get_by(User, username: env.params.url["username"])
+      raise Realworld::NotFoundException.new(env) if !profile_owner
 
-      response = {"profile" => Realworld::Decorators::Profile.new(p_owner, user)}
+      response = {"profile" => Realworld::Decorators::Profile.new(profile_owner, user)}
       response.to_json
     end
   end
