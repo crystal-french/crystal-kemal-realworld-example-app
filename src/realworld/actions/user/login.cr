@@ -17,7 +17,7 @@ module Realworld::Actions::User
       password = params["password"].as_s
 
       user = Repo.get_by(User, email: email)
-      if user && Crypto::Bcrypt::Password.new(user.hash.not_nil!) == password
+      if user && Crypto::Bcrypt::Password.new(user.hash.not_nil!).verify(password)
         response = {"user" => Realworld::Decorators::User.new(user)}
         response.to_json
       else
