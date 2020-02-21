@@ -4,7 +4,7 @@ require "../models/user"
 
 module Realworld::Services
   class Auth
-    ALGORITHM = ENV["JWT_ALGORITHM"]
+    ALGORITHM = JWT::Algorithm.parse(ENV["JWT_ALGORITHM"])
     SECRET    = ENV["JWT_SECRET"]
 
     def self.auth(header : String)
@@ -18,7 +18,7 @@ module Realworld::Services
     end
 
     def self.jwt_for(user : Realworld::Models::User)
-      payload = { "id" => user.id, "exp" => (Time.now + 30.days).epoch }
+      payload = { "id" => user.id, "exp" => (Time.local + 30.days).to_unix }
       JWT.encode(payload, SECRET, ALGORITHM)
     end
   end
