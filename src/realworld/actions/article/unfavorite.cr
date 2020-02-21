@@ -18,7 +18,6 @@ module Realworld::Actions::Article
 
       article = Repo.get_by(Article, slug: slug)
       raise Realworld::NotFoundException.new(env) if !article
-      raise Realworld::ForbiddenException.new(env) if article.user_id == user.id
 
       query = Repo::Query.where(article_id: article.id, user_id: user.id)
       changeset = Repo.delete_all(Favorite, query)
