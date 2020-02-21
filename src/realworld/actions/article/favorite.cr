@@ -17,7 +17,6 @@ module Realworld::Actions::Article
 
       article = Repo.get_by(Realworld::Models::Article, slug: slug)
       raise Realworld::NotFoundException.new(env) if !article
-      raise Realworld::ForbiddenException.new(env) if article.user_id == user.id
 
       article = Repo.get!(Realworld::Models::Article, article.id, Repo::Query.preload([:favorites, :tags, :user]))
       
