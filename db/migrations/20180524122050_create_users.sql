@@ -6,7 +6,7 @@ CREATE TABLE realworld.users (
 	hash VARCHAR(60) NOT NULL,
 	email varchar(100) NOT NULL,
 	bio TEXT NULL,
-	image varchar(100) NULL,
+	image varchar(255) NULL,
 	CONSTRAINT users_PK PRIMARY KEY (id),
 	CONSTRAINT users_UN1 UNIQUE KEY (username),
 	CONSTRAINT users_UN2 UNIQUE KEY (email)
