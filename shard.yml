@@ -9,6 +9,9 @@ development_dependencies:
   dotenv:
     github: gdotdesign/cr-dotenv
     version: ~> 0.6.0
+  spec-kemal:
+    github: kemalcr/spec-kemal
+    version: ~> 0.5.0
 
 dependencies:
   kemal:
