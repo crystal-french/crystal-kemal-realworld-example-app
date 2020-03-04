@@ -1,0 +1,44 @@
+language: crystal
+
+services: 
+  - mysql
+
+env:
+  global:
+    - APP_ENV=production
+    - MYSQL_DATABASE=realworld
+    - MYSQL_HOSTNAME=127.0.0.1
+    - MYSQL_USERNAME=root
+    - MYSQL_PASSWORD=
+    - MYSQL_PORT=3306
+    - JWT_ALGORITHM=HS256
+    - JWT_SECRET=BFq256MsBdJIU7lcDdMlNlH1FRr40Em1
+    - KEMAL_ENV=production
+    - KEMAL_PORT=3000
+    - KEMAL_HOST=0.0.0.0
+
+jobs:
+  include:
+    - stage: spec
+      script: 
+        - KEMAL_ENV=test crystal spec
+    - stage: integration
+      install:
+        - curl https://raw.githubusercontent.com/axvm/cake/master/install.sh | bash
+        - git clone https://github.com/gothinkster/realworld.git
+        - shards install
+        - nvm install 9
+        - npm install -g npx
+      before_script:
+        - mysql -e 'CREATE DATABASE IF NOT EXISTS realworld;'
+        - source /home/travis/.bashrc
+        - cake dbmigrate
+      script:
+        - shards build realworld --production
+        - bin/realworld &
+        - cd realworld/api
+        - APIURL=http://localhost:3000 ./run-api-tests.sh
+
+stages:
+  - spec
+  - integration
