@@ -22,7 +22,7 @@ module Realworld::Actions::Article
       article.body  = params["body"].as_s
       article.description = params["description"].as_s
       
-      article.slug = article.title.not_nil!.downcase.gsub(/[^\w ]/, "").gsub(/\s+/, "-")
+      article.slug = article.title.not_nil!.downcase.gsub(/[^\w]/, "").gsub(/\s+/, "-")
       
       article.user = user
       article.tags = [] of Tag
