@@ -30,10 +30,12 @@ module Realworld::Actions::Article
       article.favorites = Repo.get_association(article, :favorites).as(Array(Favorite))
       article.user = user
 
-      new_tags = params["tagList"].as_a.uniq.map do |tag_name|
-        Tag.new.tap do |tag|
-          tag.article = article
-          tag.name = tag_name.as_s
+      new_tags = params["tagList"]?.try do |tag_list|
+        tag_list.as_a.uniq.map do |tag_name|
+          Tag.new.tap do |tag|
+            tag.article = article
+            tag.name = tag_name.as_s
+          end
         end
       end
 
