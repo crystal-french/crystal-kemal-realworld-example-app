@@ -26,9 +26,9 @@ module Realworld::Actions::Article
       
       if filter_favorited_by
         user_favorited_by = Repo.get_by(User, username: filter_favorited_by)
-        raise Realworld::NotFoundException.new(env) if !user_favorited_by
+        user_favorited_by_id = user_favorited_by.try(&.id)
 
-        query = query.join(:favorites).where("favorites.user_id = ?", user_favorited_by.id)
+        query = query.join(:favorites).where("favorites.user_id = ?", user_favorited_by_id)
       end
 
       query = query.preload([:tags, :user, :favorites])
