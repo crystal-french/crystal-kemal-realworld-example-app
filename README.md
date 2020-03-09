@@ -1,4 +1,4 @@
-# ![RealWorld Kemal App](logo.png)
+# ![RealWorld Kemal App](media/logo.png)
 
 [![Build Status](https://travis-ci.com/reiswindy/kemal-realworld.svg?branch=master)](https://travis-ci.com/reiswindy/kemal-realworld)
 
