@@ -1,29 +1,74 @@
-# ![RealWorld Example App](logo.png)
+# ![RealWorld Kemal App](media/logo.png)
 
-> ### Example Crystal/Kemal codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
+[![Build Status](https://travis-ci.com/reiswindy/kemal-realworld.svg?branch=master)](https://travis-ci.com/reiswindy/kemal-realworld)
 
-
-This codebase was created to demonstrate a fully fledged fullstack application built with **Crystal and Kemal** including CRUD operations, authentication, routing, pagination, and more.
-
-We've gone to great lengths to adhere to the **Crystal and Kemal** community styleguides & best practices.
-
-For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
-
-
-# How it works
-
-> Describe the general architecture of your app here
+Example Crystal/Kemal codebase that implements the [RealWorld](https://github.com/gothinkster/realworld) spec and API.
 
 # Getting started
 
-## Installation
+## Requirements
+* [Crystal](https://crystal-lang.org/docs/installation/)
+* [Cake](https://github.com/axvm/cake)
+* Git
+* MySQL
 
-* Install [Crystal](https://crystal-lang.org/docs/installation/) and Git,
-* git clone https://github.com/humboldtux/crystal-kemal-realworld-example-app.git
-* cd crystal-kemal-realworld-example-app
-* shards install
-* crystal run src/realworld.cr
+## Usage
 
-# To Do / In Progress
+Clone this repository and install its dependencies:
+```sh
+$ git clone git@github.com:reiswindy/kemal-realworld.git
+$ cd kemal-realworld
+$ shards install
+``` 
 
-See the [project board](https://github.com/humboldtux/crystal-kemal-realworld-example-app/projects/1)
+Create a file named `.env.development` and set up your database credentials. You may use the example file `.env.dist` as a base for this:
+```sh
+$ cp .env.dist .env.development
+```
+
+Run Cake task `dbmigrate` to set up the database schema. Internally, this task uses [micrate](https://github.com/amberframework/micrate) to run the migrations in the `db` folder:
+```sh
+$ cake dbmigrate
+```
+
+Build and run the server:
+```sh
+$ shards build realworld
+$ bin/realworld
+```
+
+## Environment variables
+
+This repository uses [cr-dotenv](https://github.com/gdotdesign/cr-dotenv) to set up the environment variables in non-production builds. You may specify which `.env` to load by providing the `APP_ENV` environment variable when running the server. By default this value is `development`, and the file loaded is `.env.development` as a result.
+
+```sh
+$ APP_ENV=integration bin/realworld # Will load .env.integration instead
+```
+
+## Production
+
+When **built** in production mode, `.env` files will no longer be loaded. All values will be taken from the system's environment variables.
+
+To build and run the server in production mode:
+```sh
+$ APP_ENV=production shards build realworld --production --release --no-debug --progress --stats
+$ bin/realworld
+```
+
+# Testing
+
+## Specs
+
+This repository uses [spec-kemal](https://github.com/kemalcr/spec-kemal) for testing responses returned by Kemal. This requires setting the environment variable `KEMAL_ENV` to `test` when running Crystal's built in testing framework:
+```sh
+$ KEMAL_ENV=test crystal spec
+```
+
+## Integration
+
+This repository uses the integration test suite provided by https://github.com/gothinkster/realworld/tree/master/api in its Travis CI script. If the badge is currently green, all tests have passed.
+
+## Contributors
+
+* [@humboldtux](https://github.com/humboldtux) Benoit Benedetti - creator
+* [@reiswindy](https://github.com/reiswindy) - creator, maintainer
